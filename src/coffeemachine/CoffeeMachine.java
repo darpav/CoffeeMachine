@@ -17,11 +17,8 @@ public class CoffeeMachine {
 
     private final String ADMIN_USERNAME = "admin";
     private final String ADMIN_PASSWORD = "admin123";
-
     private final String ROLE_USER = "USER";
     private final String ROLE_ADMIN = "ADMIN";
-
-    private String currentUser;
 
     private int water;
     private int milk;
@@ -30,28 +27,25 @@ public class CoffeeMachine {
     private int amountOfMoney;
 
     private CoffeeType[] coffeeTypes;
-
+    private String currentUser;
     private CoffeeMachinePersistentData persistentData;
 
     public CoffeeMachine() throws IOException {
         persistentData = new CoffeeMachinePersistentData();
         if (persistentData != null) {
-            initMachineState();
+            initMachineStateFromFile();
         } else {
-            initDefaultState();
+            initMachineState();
         }
-
-
         coffeeTypes = new CoffeeType[]{
                 new CoffeeType(1, "espresso", 250, 0, 16, 4),
                 new CoffeeType(2, "latte", 350, 75, 20, 7),
                 new CoffeeType(3, "cappuccino", 200, 100, 12, 6)
         };
-
         currentUser = ROLE_USER;
     }
 
-    private void initDefaultState() {
+    private void initMachineState() {
         this.water = 400;
         this.milk = 540;
         this.coffeeBeans = 120;
@@ -59,9 +53,8 @@ public class CoffeeMachine {
         this.amountOfMoney = 550;
     }
 
-    private void initMachineState() throws IOException {
-        int[] loadMachineState = persistentData.LoadData();
-
+    private void initMachineStateFromFile() throws IOException {
+        int[] loadMachineState = persistentData.loadData();
         this.water = loadMachineState[0];
         this.milk = loadMachineState[1];
         this.coffeeBeans = loadMachineState[2];
@@ -152,11 +145,9 @@ public class CoffeeMachine {
     }
 
     public void exit() throws IOException {
-        // save to state to db
         int[] machineState = {this.water, this.milk, this.coffeeBeans, this.disposableCups, this.amountOfMoney};
         String[] credentials = {this.ADMIN_USERNAME, this.ADMIN_PASSWORD};
         CoffeeType[] machineCoffeeTypes = coffeeTypes;
-
-        persistentData.SaveData(machineState, credentials, machineCoffeeTypes);
+        persistentData.saveData(machineState, credentials, machineCoffeeTypes);
     }
 }

@@ -7,7 +7,7 @@ public class CoffeeMachinePersistentData {
 
     private final String FILE_NAME = "docs/coffee_machine_status.txt";
 
-    public void SaveData(int[] state, String[] credentials, CoffeeType[] coffeeTypes) throws IOException {
+    public void saveData(int[] state, String[] credentials, CoffeeType[] coffeeTypes) throws IOException {
         FileWriter fileWriter = new FileWriter(FILE_NAME);
 
         fileWriter.write(state[0] + "; " + state[1] + "; " + state[2] + "; " + state[3] + "; " + state[4] + "\n");
@@ -20,7 +20,7 @@ public class CoffeeMachinePersistentData {
         fileWriter.close();
     }
 
-    public int[] LoadData() throws IOException {
+    public int[] loadData() throws IOException {
 
         Scanner scanner = new Scanner(new File(FILE_NAME));
         scanner.useDelimiter("; |\n");
